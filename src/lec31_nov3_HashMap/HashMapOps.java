@@ -80,22 +80,27 @@ public class HashMapOps {
 		}
 		int maxLength = 0;
 		int starting=0;
-		for (int i = 0; i < arr.length; i++) {
-			if(map.get(arr[i])) {
-				int count=0;
-				while(arr[count+i]==arr[count+i+1]-1) {
+		for (int key : map.keySet()) {
+
+			if (map.get(key)) {
+
+				int count = 0;
+				while (map.containsKey(key + count)) {
 					count++;
 				}
-				
-				if(maxLength<count) {
-					maxLength=count;
-					starting=0;
+
+				if (count > maxLength) {
+					maxLength = count;
+					starting = key;
 				}
+
 			}
+
 		}
+
 		
-		for(int i=starting;i<=maxLength;i++) {
-			System.out.print(arr[i]+" ");
+		for(int i=0;i<maxLength;i++) {
+			System.out.print(i+starting+" ");
 		}
 	}
 
