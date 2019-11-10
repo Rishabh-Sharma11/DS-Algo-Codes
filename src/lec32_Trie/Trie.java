@@ -6,7 +6,7 @@ public class Trie {
 	private class Node {
 		char ch;
 		boolean eow;
-		HashMap<Character, Node> children;
+		HashMap<Character, Node> children = new HashMap<>();
 
 		public Node(char ch) {
 			this.ch = ch;
@@ -16,7 +16,7 @@ public class Trie {
 	private Node root;
 
 	public Trie() {
-		root = new Node('*');
+		this.root = new Node('*');
 	}
 
 	public void addWord(String word) {
@@ -40,7 +40,7 @@ public class Trie {
 		}
 
 	}
-	
+
 	public boolean searchWord(String word) {
 		return searchWord(root, word);
 	}
@@ -59,14 +59,14 @@ public class Trie {
 		}
 
 	}
-	
+
 	public boolean prefixSearchWord(String word) {
 		return prefixSearchWord(root, word);
 	}
 
 	private boolean prefixSearchWord(Node node, String word) {
 		if (word.length() == 0) {
-			return false;
+			return true;
 		}
 
 		char ch = word.charAt(0);
@@ -78,20 +78,21 @@ public class Trie {
 		}
 
 	}
-	
+
 	public void display() {
 		display(root);
+		System.out.println("-----------------------------");
 	}
 
 	private void display(Node node) {
-		String str=node.ch+" -> "+node.children.keySet();
+		String str = node.ch + " -> " + node.children.keySet();
 		System.out.println(str);
-		for(char key:node.children.keySet()) {
+		for (char key : node.children.keySet()) {
 			display(node.children.get(key));
 		}
-		
+
 	}
-	
+
 	public void removeWord(String word) {
 		removeWord(root, word);
 	}
@@ -106,14 +107,13 @@ public class Trie {
 		String row = word.substring(1);
 		if (node.children.containsKey(ch)) {
 			removeWord(node.children.get(ch), row);
-		} 
-		
-		Node child=node.children.get(ch);
-		if(child.eow==false&&child.children.size()==0) {
+		}
+
+		Node child = node.children.get(ch);
+		if (child.eow == false && child.children.size() == 0) {
 			node.children.remove(ch);
 		}
 
 	}
-	
 
 }
