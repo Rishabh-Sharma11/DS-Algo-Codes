@@ -11,11 +11,16 @@ public class DP {
 //		System.out.println(fibonacciBottomUp(n));
 
 //		BoardPath
-		int n = 10;
-//		System.out.println(boardPath(n,0,""));
-		System.out.println(boardPathTD(n, 0, new int[n]));
-		System.out.println(boardPathBU(n, 0));
-		System.out.println(boardPathBUSE(n, 0));
+//		int n = 10;
+//		System.out.println(boardPathTD(n, 0, new int[n]));
+//		System.out.println(boardPathBU(n, 0));
+//		System.out.println(boardPathBUSE(n, 0));
+
+//		MazePath
+		int er = 2, ec = 3;
+		System.out.println(mazePathTD(er, ec, 0, 0, new int[er + 1][ec + 1]));
+		System.out.println(mazePathBU(er, ec, 0, 0));
+		System.out.println(mazePathBUSE(er, ec, 0, 0));
 
 	}
 
@@ -132,8 +137,61 @@ public class DP {
 		}
 		return strg[0];
 	}
-	
-	
-	
+
+	public static int mazePath(int er, int ec, int cr, int cc, String ans) {
+		if (cr == er && cc == ec) {
+			System.out.println(ans);
+			return 1;
+		}
+		if (cr > er || cc > ec) {
+			return 0;
+		}
+		int cH = mazePath(er, ec, cr, cc + 1, ans + 'H');
+		int cV = mazePath(er, ec, cr + 1, cc, ans + 'V');
+		return cH + cV;
+	}
+
+	public static int mazePathTD(int er, int ec, int cr, int cc, int[][] storage) {
+		if (cr == er && cc == ec) {
+			return 1;
+		}
+		if (cr > er || cc > ec) {
+			return 0;
+		}
+
+		if (storage[cr][cc] != 0) {
+			return storage[cr][cc];
+		}
+		int cH = mazePathTD(er, ec, cr, cc + 1, storage);
+		int cV = mazePathTD(er, ec, cr + 1, cc, storage);
+
+		storage[cr][cc] = cH + cV;
+		return cH + cV;
+	}
+
+	public static int mazePathBU(int er, int ec, int cr, int cc) {
+		int[][] storage = new int[er + 2][ec + 2];
+		storage[er][ec] = 1;
+		for (int i = er; i >= 0; i--) {
+			for (int j = ec; j >= 0; j--) { // i=row,j=col
+				if (i == er && j == ec) {
+					continue;
+				}
+				storage[i][j] = storage[i + 1][j] + storage[i][j + 1];
+			}
+		}
+		return storage[0][0];
+	}
+
+	public static int mazePathBUSE(int er, int ec, int cr, int cc) {
+		int[] storage = new int[ec + 1];
+		storage[ec] = 1;
+		for (int r = er; r >= 0; r--) {
+			for (int c = ec - 1; c >= 0; c--) {
+				storage[c] += storage[c + 1];
+			}
+		}
+		return storage[0];
+	}
 
 }
