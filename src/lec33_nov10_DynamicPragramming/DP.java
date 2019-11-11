@@ -17,10 +17,12 @@ public class DP {
 //		System.out.println(boardPathBUSE(n, 0));
 
 //		MazePath
-		int er = 2, ec = 3;
-		System.out.println(mazePathTD(er, ec, 0, 0, new int[er + 1][ec + 1]));
-		System.out.println(mazePathBU(er, ec, 0, 0));
-		System.out.println(mazePathBUSE(er, ec, 0, 0));
+		int er = 2, ec = 2;
+//		System.out.println(mazePathTD(er, ec, 0, 0, new int[er + 1][ec + 1]));
+//		System.out.println(mazePathBU(er, ec, 0, 0));
+//		System.out.println(mazePathBUSE(er, ec, 0, 0));
+
+		System.out.println(mazePathBUSEwithDiagonal(er, ec, 0, 0));
 
 	}
 
@@ -193,5 +195,22 @@ public class DP {
 		}
 		return storage[0];
 	}
+
+	public static int mazePathBUSEwithDiagonal(int er, int ec, int cr, int cc) {
+		int[] storage = new int[ec + 1];
+		storage[ec] = 1;
+		int diag = 0;
+		for (int r = er; r >= 0; r--) {
+			for (int c = ec - 1; c >= 0; c--) {
+				int temp = storage[c];
+				storage[c] += storage[c + 1] + diag;
+				diag = temp;
+			}
+			diag = 1;
+		}
+		return storage[0];
+
+	}
+
 
 }
