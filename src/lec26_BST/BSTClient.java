@@ -18,7 +18,6 @@ public class BSTClient {
 //		bst.replaceWithSumLarger2();
 //		bst.display();
 		
-		bst.add(45);
 		bst.display();
 
 	}

@@ -209,33 +209,27 @@ public class LL_DeleteNodes {
 
 		// System.out.println("END");
 	}
-	
-	
-	private class DLPair{
-		Node prev;
-		Node curr;
-	}
+
 	public void deleteLarger() throws Exception {
-		Stack<DLPair> stack=new Stack<>();
-		Node temp=this.head.next;
-		DLPair dlp=new DLPair();
-		dlp.prev=this.head;
-		dlp.curr=this.head.next;
-		if(dlp.curr.data>dlp.prev.data) {
-			dlp.prev.next=dlp.curr.next;
-		}
-		while(temp!=null) {
-			while(!stack.isEmpty()&&temp.data>stack.peek().curr.data) {
-				DLPair p=stack.pop();
-				System.out.println("pop:"+p.curr.data);
-				p.prev.next=p.curr.next;
+
+		Node temp = head;
+		Stack<Node> stack = new Stack<>();
+		stack.push(temp);
+		while (temp != null) {
+			while (!stack.isEmpty() && stack.peek().data < temp.data) {
+				stack.pop();
 			}
-			stack.push(dlp);
-			System.out.println("push:"+stack.peek().curr.data);
-			dlp.prev=dlp.curr;
-			dlp.curr=dlp.curr.next;
-			temp=temp.next;
+			stack.push(temp);
+			temp = temp.next;
 		}
+
+		LL_DeleteNodes nlist = new LL_DeleteNodes();
+		while (!stack.isEmpty()) {
+			nlist.addFirst(stack.pop().data);
+		}
+		this.head = nlist.head;
+		this.tail = nlist.tail;
+		this.size = nlist.size;
 
 	}
 

@@ -180,71 +180,243 @@ public class BST {
 		
 	}
 	
-	public void add(int item) {
-		add(root,item);
-	}
-
-	private void add(Node node, int item) {		//my solution
-		if(node.right==null&&node.data<item) {
-			Node nn=new Node();
-			nn.data=item;
-			node.right=nn;
-			return;
-		}else if(node.left==null&&node.data>=item) {
-			Node nn=new Node();
-			nn.data=item;
-			node.left=nn;
-			return ;
-		}
-		
-		
-		if(item>node.data) {
-			add(node.right,item);
-		}else {
-			add(node.left,item);
-		}
-		
-	}
 	
-	public void remove(int item) {
-		remove(root,item);
+	
+	
+//	public void add(int item) {
+//		add(root,item);
+//	}
+//
+//	private void add(Node node, int item) {		//my solution
+//		if(node.right==null&&node.data<item) {
+//			Node nn=new Node();
+//			nn.data=item;
+//			node.right=nn;
+//			return;
+//		}else if(node.left==null&&node.data>=item) {
+//			Node nn=new Node();
+//			nn.data=item;
+//			node.left=nn;
+//			return ;
+//		}
+//		
+//		
+//		if(item>node.data) {
+//			add(node.right,item);
+//		}else {
+//			add(node.left,item);
+//		}
+//		
+//	}
+//	
+//	public void remove(int item) {
+//		remove(root,item);
+//	}
+//
+//	private void remove(Node node, int item) {
+//		if((node.right.right==null&&node.right.left==null)||(node.left.right==null&&node.left.left==null)) {
+//			if(node.left.right==null&&node.left.left==null) {
+//				node.left=null;
+//			}else {
+//				node.right=null;
+//			}
+//			return;
+//		}else if((node.right.right!=null&&node.right.left==null)||(node.right.right==null&&node.right.left!=null)) {
+//			if(node.right.right==null&&node.right.left!=null) {
+//				node.right=node.right.left;
+//			}else {
+//				node.right=node.right.right;
+//			}
+//		}
+//		else if((node.left.right!=null&&node.left.left==null)||(node.left.right==null&&node.left.left!=null)) {
+//			if(node.left.right==null&&node.left.left!=null) {
+//				node.left=node.left.left;
+//			}else {
+//				node.left=node.left.right;
+//			}
+//		}else {
+//			int lmax=max(node.left);
+//			
+//			
+//			
+//		}
+//		
+//		
+//		if(item>node.data) {
+//			remove(node.right,item);
+//		}else {
+//			remove(node.left,item);
+//		}
+//		
+//	}
+	
+	
+	
+	
+	
+	public void addOneLevelAhead(int item) {
+		addOneLevelAhead(root, item);
 	}
 
-	private void remove(Node node, int item) {
-		if((node.right.right==null&&node.right.left==null)||(node.left.right==null&&node.left.left==null)) {
-			if(node.left.right==null&&node.left.left==null) {
-				node.left=null;
-			}else {
-				node.right=null;
+	private void addOneLevelAhead(Node node, int item) {
+
+		if (item <= node.data) {
+
+			if (node.left == null) {
+
+				Node nn = new Node();
+				nn.data = item;
+
+				node.left = nn;
+
+			} else {
+				addOneLevelAhead(node.left, item);
 			}
+
+		} else {
+
+			if (node.right == null) {
+
+				Node nn = new Node();
+				nn.data = item;
+
+				node.right = nn;
+
+			} else {
+				addOneLevelAhead(node.right, item);
+			}
+
+		}
+	}
+
+	public void addReturn(int item) {
+		root = addReturn(root, item);
+	}
+
+	private Node addReturn(Node node, int item) {
+
+		if (node == null) {
+			Node nn = new Node();
+			nn.data = item;
+			return nn;
+		}
+
+		if (item <= node.data) {
+			node.left = addReturn(node.left, item);
+		} else {
+			node.right = addReturn(node.right, item);
+		}
+
+		return node;
+	}
+
+	public void removeParent(int item) {
+
+		if (root.data == item) {
+
+			if (root.left == null && root.right == null) {
+				root = null;
+			} else if (root.left == null && root.right != null) {
+				root = root.right;
+			} else if (root.left != null && root.right == null) {
+				root = root.left;
+			} else {
+				removeParent(root, null, item);
+			}
+		} else {
+			removeParent(root, null, item);
+		}
+
+	}
+
+	private void removeParent(Node node, Node parent, int item) {
+
+		if (node == null) {
 			return;
-		}else if((node.right.right!=null&&node.right.left==null)||(node.right.right==null&&node.right.left!=null)) {
-			if(node.right.right==null&&node.right.left!=null) {
-				node.right=node.right.left;
-			}else {
-				node.right=node.right.right;
+		}
+
+		if (item < node.data) {
+			removeParent(node.left, node, item);
+		} else if (item > node.data) {
+			removeParent(node.right, node, item);
+		} else {
+
+			// case 1 : leaf
+			if (node.left == null && node.right == null) {
+
+				if (node.data <= parent.data) {
+					parent.left = null;
+				} else {
+					parent.right = null;
+				}
 			}
-		}
-		else if((node.left.right!=null&&node.left.left==null)||(node.left.right==null&&node.left.left!=null)) {
-			if(node.left.right==null&&node.left.left!=null) {
-				node.left=node.left.left;
-			}else {
-				node.left=node.left.right;
+
+			// case 2
+			else if (node.left != null && node.right == null) {
+
+				if (node.data <= parent.data) {
+					parent.left = node.left;
+				} else {
+					parent.right = node.left;
+				}
 			}
-		}else {
-			int lmax=max(node.left);
-			
-			
-			
+
+			// case 3
+			else if (node.left == null && node.right != null) {
+
+				if (node.data <= parent.data) {
+					parent.left = node.right;
+				} else {
+					parent.right = node.right;
+				}
+			}
+
+			// case 4
+			else if (node.left != null && node.right != null) {
+
+				int lmax = max(node.left);
+				removeParent(node.left, node, lmax);
+				node.data = lmax;
+
+			}
+
 		}
-		
-		
-		if(item>node.data) {
-			remove(node.right,item);
-		}else {
-			remove(node.left,item);
+	}
+
+	public void removeReturn(int item) {
+		root = removeReturn(root, item);
+	}
+
+	private Node removeReturn(Node node, int item) {
+
+		if (node == null) {
+			return null;
 		}
-		
+
+		if (item == node.data) {
+
+			if (node.left == null && node.right == null) {
+				return null;
+			} else if (node.left != null && node.right == null) {
+				return node.left;
+			} else if (node.left == null && node.right != null) {
+				return node.right;
+			} else {
+
+				int lmax = max(node.left);
+				node.left = removeReturn(node.left, lmax);
+				node.data = lmax;
+
+				return node;
+			}
+
+		} else if (item < node.data) {
+			node.left = removeReturn(node.left, item);
+		} else if (item > node.data) {
+			node.right = removeReturn(node.right, item);
+		}
+
+		return node;
 	}
 
 }

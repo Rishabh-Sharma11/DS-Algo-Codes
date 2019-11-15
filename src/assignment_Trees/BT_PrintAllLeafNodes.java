@@ -16,22 +16,39 @@ public class BT_PrintAllLeafNodes {
 	Scanner scn = new Scanner(System.in);
 
 	public BT_PrintAllLeafNodes() {
-		root = takeInput(new LinkedList<>());
+		root = takeInput();
+		
 	}
 
-	private Node takeInput(Queue<Node> queue) {
-		int item=scn.nextInt();
-		if(item==-1) {
-			return null;
+	
+
+	private Node takeInput() {
+		Node ro = new Node();
+		ro.data = scn.nextInt();
+		Queue<Node> queue = new LinkedList<>();
+		queue.add(ro);
+		while (!queue.isEmpty()) {
+			Node rv = queue.remove();
+			int l = scn.nextInt();
+			int r = scn.nextInt();
+			if (l != -1) {
+				Node nl = new Node();
+				nl.data = l;
+				rv.left = nl;
+				queue.add(nl);
+			}
+			if (r != -1) {
+				Node nr = new Node();
+				nr.data = r;
+				rv.right = nr;
+				queue.add(nr);
+			}
 		}
-		Node nn=new Node();
-		nn.data=item;
-		queue.add(nn);
-		nn.left=takeInput( queue);
-		nn.right=takeInput( queue);
-		queue.remove();
-		return nn;
+		return ro;
 	}
+
+//	 1 2 3 4 5 6 7 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+
 	public void display() {
 		System.out.println("----------------------------");
 		display(root);
@@ -65,26 +82,26 @@ public class BT_PrintAllLeafNodes {
 		display(node.right);
 
 	}
-	
+
 	public void printLeafNodes() {
 		printLeafNodes(root);
 	}
 
 	private void printLeafNodes(Node node) {
-		if(node.left==null&&node.right==null) {
-			System.out.print(node.data+" ");
+		if (node.left == null && node.right == null) {
+			System.out.print(node.data + " ");
 			return;
 		}
-		if(node.left==null||node.right==null) {
+		if (node.left == null || node.right == null) {
 			return;
 		}
 		printLeafNodes(node.left);
 		printLeafNodes(node.right);
-		
+
 	}
-	
+
 	public static void main(String[] args) {
-		BT_PrintAllLeafNodes obj=new BT_PrintAllLeafNodes();
+		BT_PrintAllLeafNodes obj = new BT_PrintAllLeafNodes();
 		obj.printLeafNodes();
 		obj.display();
 	}

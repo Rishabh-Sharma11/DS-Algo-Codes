@@ -267,44 +267,49 @@ public class GenericTree {
 		}
 	}
 
-	public void LevelOrderLineWise2() { // incomplete
-		LinkedList<Node> queue = new LinkedList<>();
-		queue.add(root);
-		queue.add(null);
+	public void LevelOrderLineWise2() { 
+		LinkedList<Node> primary = new LinkedList<>();
+		LinkedList<Node> helper = new LinkedList<>();
 
-		while (!queue.isEmpty()) {
+		primary.addLast(root);
 
-			Node rn = queue.removeFirst();
-			if (rn == null) {
+		while (!primary.isEmpty()) {
 
-				if (queue.isEmpty()) {
-					break;
-				}
-
-				System.out.println();
-				queue.addLast(null);
-
-				continue;
-			}
+			Node rn = primary.removeFirst();
 
 			System.out.print(rn.data + " ");
+
 			for (Node child : rn.children) {
-				queue.add(child); // adds at last
+				helper.addLast(child);
 			}
+
+			if (primary.isEmpty()) {
+				primary = helper;
+				helper = new LinkedList<>();
+
+				System.out.println();
+			}
+
 		}
 	}
 
 	public void LevelOrderZigZag() {
 		int count = 0;
+
 		LinkedList<Node> queue = new LinkedList<>();
 		LinkedList<Node> stack = new LinkedList<>();
-		queue.add(root);
+
+		queue.addLast(root);
+
 		while (!queue.isEmpty()) {
+
 			Node rn = queue.removeFirst();
+
 			System.out.print(rn.data + " ");
+
 			if (count % 2 == 0) {
 				for (Node child : rn.children) {
-					stack.addFirst(child); // adds at last
+					stack.addFirst(child);
 				}
 			} else {
 				for (int i = rn.children.size() - 1; i >= 0; i--) {
@@ -313,13 +318,14 @@ public class GenericTree {
 			}
 
 			if (queue.isEmpty()) {
-				System.out.println();
-				LinkedList<Node> temp = queue;
 				queue = stack;
-				stack = temp;
+				stack = new LinkedList<>();
+
+				System.out.println();
 
 				count++;
 			}
+
 		}
 	}
 
