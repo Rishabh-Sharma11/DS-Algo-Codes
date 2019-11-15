@@ -1,5 +1,7 @@
 package assignment_Trees;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class BT_PrintAllLeafNodes {
@@ -14,23 +16,21 @@ public class BT_PrintAllLeafNodes {
 	Scanner scn = new Scanner(System.in);
 
 	public BT_PrintAllLeafNodes() {
-		root = takeInput(false);
+		root = takeInput(new LinkedList<>());
 	}
 
-	private Node takeInput(boolean isleft) {
-		int item = scn.nextInt();
-		if (item != -1) {
-			Node nn = new Node();
-			nn.data = item;
-			if(isleft) {
-				nn.left=takeInput(!isleft);
-			}else {
-			nn.right=takeInput(!isleft);
-			}
-			
-			return nn;
+	private Node takeInput(Queue<Node> queue) {
+		int item=scn.nextInt();
+		if(item==-1) {
+			return null;
 		}
-		return null;
+		Node nn=new Node();
+		nn.data=item;
+		queue.add(nn);
+		nn.left=takeInput( queue);
+		nn.right=takeInput( queue);
+		queue.remove();
+		return nn;
 	}
 	public void display() {
 		System.out.println("----------------------------");
