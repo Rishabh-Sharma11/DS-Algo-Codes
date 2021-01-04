@@ -1,7 +1,10 @@
 package lec38_Graph;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+
+import lec30_Heap.HeapGeneric;
 
 public class Graph {
 
@@ -86,6 +89,7 @@ public class Graph {
 	private class Pair {
 		int vname;
 		String psf;
+		String color;
 	}
 
 	public boolean BFS(int src, int dst) {
@@ -128,4 +132,334 @@ public class Graph {
 
 	}
 
+	public boolean DFS(int src, int dst) {
+		HashMap<Integer, Boolean> visited = new HashMap<>();
+//		Queue<Pair> queue =new LinkedList<>();
+		LinkedList<Pair> stack = new LinkedList<>();
+
+		Pair sp = new Pair();
+		sp.vname = src;
+		sp.psf = src + "";
+
+		stack.addFirst(sp);
+
+		while (!stack.isEmpty()) {
+			Pair rp = stack.removeFirst();
+
+			if (visited.containsKey(rp.vname)) {
+				continue;
+			}
+
+			if (rp.vname == dst) {
+				System.out.println(rp.psf);
+				return true;
+			}
+
+			visited.put(rp.vname, true);
+
+			for (int j = 1; j < matrix[0].length; j++) {
+				if (matrix[rp.vname][j] != 0 && !visited.containsKey(j)) {
+					Pair np = new Pair();
+					np.vname = j;
+					np.psf = rp.psf + j;
+					stack.addFirst(np);
+				}
+			}
+		}
+
+		return false;
+
+	}
+
+	public void BFT() {
+		HashMap<Integer, Boolean> visited = new HashMap<>();
+//		Queue<Pair> queue =new LinkedList<>();
+		LinkedList<Pair> queue = new LinkedList<>();
+		for (int src = 1; src < matrix.length; src++) {
+			if (visited.containsKey(src)) {
+				continue;
+			}
+			Pair sp = new Pair();
+			sp.vname = src;
+			sp.psf = src + "";
+
+			queue.addLast(sp);
+
+			while (!queue.isEmpty()) {
+				Pair rp = queue.removeFirst();
+
+				if (visited.containsKey(rp.vname)) {
+//				if we reach this block, then it is sure that there is a loop in the graph
+					continue;
+				}
+
+				System.out.println(rp.vname + " via " + rp.psf);
+
+				visited.put(rp.vname, true);
+
+				for (int j = 1; j < matrix[0].length; j++) {
+					if (matrix[rp.vname][j] != 0 && !visited.containsKey(j)) {
+						Pair np = new Pair();
+						np.vname = j;
+						np.psf = rp.psf + j;
+						queue.addLast(np);
+					}
+				}
+			}
+		}
+
+	}
+
+	public void DFT() {
+		HashMap<Integer, Boolean> visited = new HashMap<>();
+//		Queue<Pair> queue =new LinkedList<>();
+		LinkedList<Pair> stack = new LinkedList<>();
+		for (int src = 1; src < matrix.length; src++) {
+			if (visited.containsKey(src)) {
+				continue;
+			}
+			Pair sp = new Pair();
+			sp.vname = src;
+			sp.psf = src + "";
+
+			stack.addFirst(sp);
+
+			while (!stack.isEmpty()) {
+				Pair rp = stack.removeFirst();
+
+				if (visited.containsKey(rp.vname)) {
+					continue;
+				}
+
+				System.out.println(rp.vname + " via " + rp.psf);
+
+				visited.put(rp.vname, true);
+
+				for (int j = 1; j < matrix[0].length; j++) {
+					if (matrix[rp.vname][j] != 0 && !visited.containsKey(j)) {
+						Pair np = new Pair();
+						np.vname = j;
+						np.psf = rp.psf + j;
+						stack.addFirst(np);
+					}
+				}
+			}
+
+		}
+
+	}
+
+	public boolean isConnected() {
+		HashMap<Integer, Boolean> visited = new HashMap<>();
+//		Queue<Pair> queue =new LinkedList<>();
+		LinkedList<Pair> queue = new LinkedList<>();
+		int count = 0;
+		for (int src = 1; src < matrix.length; src++) {
+			if (visited.containsKey(src)) {
+				continue;
+			}
+			count++;
+			Pair sp = new Pair();
+			sp.vname = src;
+			sp.psf = src + "";
+
+			queue.addLast(sp);
+
+			while (!queue.isEmpty()) {
+				Pair rp = queue.removeFirst();
+
+				if (visited.containsKey(rp.vname)) {
+//				if we reach this block, then it is sure that there is a loop in the graph
+					continue;
+				}
+
+				System.out.println(rp.vname + " via " + rp.psf);
+
+				visited.put(rp.vname, true);
+
+				for (int j = 1; j < matrix[0].length; j++) {
+					if (matrix[rp.vname][j] != 0 && !visited.containsKey(j)) {
+						Pair np = new Pair();
+						np.vname = j;
+						np.psf = rp.psf + j;
+						queue.addLast(np);
+					}
+				}
+			}
+		}
+
+		if (count > 1) {
+			return false;
+		}
+		return true;
+
+	}
+
+	public boolean isCyclic() {
+		HashMap<Integer, Boolean> visited = new HashMap<>();
+//		Queue<Pair> queue =new LinkedList<>();
+		LinkedList<Pair> queue = new LinkedList<>();
+		for (int src = 1; src < matrix.length; src++) {
+			if (visited.containsKey(src)) {
+				continue;
+			}
+			Pair sp = new Pair();
+			sp.vname = src;
+			sp.psf = src + "";
+
+			queue.addLast(sp);
+
+			while (!queue.isEmpty()) {
+				Pair rp = queue.removeFirst();
+
+				if (visited.containsKey(rp.vname)) {
+//				if we reach this block, then it is sure that there is a loop in the graph
+					return true;
+				}
+
+				System.out.println(rp.vname + " via " + rp.psf);
+
+				visited.put(rp.vname, true);
+
+				for (int j = 1; j < matrix[0].length; j++) {
+					if (matrix[rp.vname][j] != 0 && !visited.containsKey(j)) {
+						Pair np = new Pair();
+						np.vname = j;
+						np.psf = rp.psf + j;
+						queue.addLast(np);
+					}
+				}
+			}
+		}
+		return false;
+
+	}
+
+	public boolean isTree() {
+		if (!this.isCyclic() && this.isConnected())
+			return true;
+		return false;
+	}
+
+	public ArrayList<ArrayList<Integer>> getConnectedComponents() {
+		HashMap<Integer, Boolean> visited = new HashMap<>();
+//		Queue<Pair> queue =new LinkedList<>();
+		LinkedList<Pair> queue = new LinkedList<>();
+		ArrayList<ArrayList<Integer>> all = new ArrayList<ArrayList<Integer>>();
+		for (int src = 1; src < matrix.length; src++) {
+			if (visited.containsKey(src)) {
+				continue;
+			}
+			ArrayList<Integer> list = new ArrayList<>();
+			Pair sp = new Pair();
+			sp.vname = src;
+			sp.psf = src + "";
+
+			queue.addLast(sp);
+
+			while (!queue.isEmpty()) {
+				Pair rp = queue.removeFirst();
+
+				if (visited.containsKey(rp.vname)) {
+//				if we reach this block, then it is sure that there is a loop in the graph
+					continue;
+				}
+
+				list.add(rp.vname);
+
+				visited.put(rp.vname, true);
+
+				for (int j = 1; j < matrix[0].length; j++) {
+					if (matrix[rp.vname][j] != 0 && !visited.containsKey(j)) {
+						Pair np = new Pair();
+						np.vname = j;
+						np.psf = rp.psf + j;
+						queue.addLast(np);
+					}
+				}
+
+			}
+			all.add(list);
+		}
+		return all;
+
+	}
+
+	public boolean isBipartite() {
+		HashMap<Integer, String> visited = new HashMap<>();
+//		Queue<Pair> queue =new LinkedList<>();
+		LinkedList<Pair> queue = new LinkedList<>();
+		for (int src = 1; src < matrix.length; src++) {
+			if (visited.containsKey(src)) {
+				continue;
+			}
+			Pair sp = new Pair();
+			sp.vname = src;
+			sp.psf = src + "";
+			sp.color = "R";
+
+			queue.addLast(sp);
+
+			while (!queue.isEmpty()) {
+				Pair rp = queue.removeFirst();
+
+				if (visited.containsKey(rp.vname)) {
+//				if we reach this block, then it is sure that there is a loop in the graph
+					if (!rp.color.equals(visited.get(rp.vname))) {
+						return false;
+					}
+					continue;
+				}
+
+				System.out.println(rp.vname + " via " + rp.psf);
+
+				visited.put(rp.vname, rp.color);
+
+				for (int j = 1; j < matrix[0].length; j++) {
+					if (matrix[rp.vname][j] != 0 && !visited.containsKey(j)) {
+						Pair np = new Pair();
+						np.vname = j;
+						np.psf = rp.psf + j;
+						np.color = rp.color.equals("R") ? "Y" : "R";
+						queue.addLast(np);
+					}
+				}
+			}
+		}
+
+		return true;
+
+	}
+	
+	private class PrimsPair implements Comparable<PrimsPair>{
+		int vname;
+		int aqvname;
+		int cost;
+		@Override
+		public int compareTo(PrimsPair o) {
+			return o.cost-this.cost;
+		}
+	}
+//	public Graph prims() {
+//		Graph mst=new Graph(matrix.length-1);
+//		HashMap<Integer,PrimsPair> map=new HashMap<Integer, Graph.PrimsPair>();
+//		HeapGeneric<PrimsPair> heap=new HeapGeneric<>();
+//		for(int i=1;i<matrix.length;i++) {
+//			PrimsPair sp=new PrimsPair();
+//			sp.vname=i;
+//			sp.aqvname=0;
+//			sp.cost=Integer.MAX_VALUE;
+//			
+//			heap.add(sp);
+//			map.put(i, sp);
+//		}
+//		
+//		while(!heap.isEmpty()) {
+//			PrimsPair rp=heap.remove();
+//			map.remove(rp);
+//			for(int j=1;j<matrix.length;j++) {
+//				if(matrix[rp.vname][j]!=0&&)
+//			}
+//		}
+//	}
 }

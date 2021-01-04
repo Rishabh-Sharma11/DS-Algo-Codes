@@ -95,5 +95,23 @@ public class LongestCommonSubsequence {
 		}
 		return storage[0][0];
 	}
+	public static int LCSBUSE(String s1, String s2){
+        int[] storage = new int[s2.length()+1];
+        int diag = 0;
+        for(int slide = s1.length()-1; slide>=0; slide--){
+            diag = 0;
+            for(int c = s2.length()-1; c>=0; c--){
+                if(s1.charAt(slide) == s2.charAt(c)){
+                    int temp = storage[c];
+                    storage[c] = diag + 1;
+                    diag = temp;
+                }else{
+                    diag = storage[c];
+                    storage[c] = Math.max(storage[c], storage[c+1]);
+                }
+            }
+        }
+        return storage[0];
+    }
 
 }

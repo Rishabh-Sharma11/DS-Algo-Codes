@@ -17,10 +17,15 @@ public class GraphClient {
 		graph.addEdge(6, 7, 23);
 		graph.addEdge(5, 7, 89);
 		
-		graph.display();
+//		graph.display();
 //		graph.printAllPaths(1, 6, new HashMap<Integer, Boolean>(), ""+1);
 //		
-		System.out.println(graph.BFS(1, 6));
+//		System.out.println(graph.BFS(1, 6));
+		
+//		graph.BFT();
+//		System.out.println(graph.getConnectedComponents());
+		
+		System.out.println(graph.isBipartite());
 	}
 
 }
