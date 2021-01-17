@@ -1,5 +1,9 @@
 package lec33_nov10_DynamicPragramming;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Collections;
+
 public class KnapSack {
 
 	public static void main(String[] args) {
@@ -14,7 +18,15 @@ public class KnapSack {
 		
 		System.out.println(knapSackBottomUp(wt, price, cap));
 
+
+//		System.out.println(fracKnapSack(wt, price, cap));
+
 	}
+
+	// ---------------------------------------------------------------------------------
+	// 0-1 KnapSack
+	// Dynamic Pragramming
+	// ---------------------------------------------------------------------------------
 
 	public static int knapSack(int[] wt, int[] price, int cap, int vidx) {
 		if (vidx == wt.length) {
@@ -95,5 +107,57 @@ public class KnapSack {
 		
 		return storage[0][cap];
 	}
+
+	// ---------------------------------------------------------------------------------
+	// Fractional KnapSack
+	// Greedy Algorithm
+	// ---------------------------------------------------------------------------------
+
+	static class Pair implements Comparator<Pair>{
+        int w;
+        int p;
+        public Pair() {}
+        public Pair(int w, int p){
+            this.w = w;
+            this.p = p;
+        }
+        @Override
+        public int compare(Pair o1, Pair o2) {
+            return o2.p/o2.w - o1.p/o1.w;   // for descending order of price/weight ratio
+        }
+        @Override
+        public String toString() {
+            String str = "Weight = " + this.w + " and Price = " + this.p;
+            return str;
+        }
+    }
+    public static float fracKnapSack(int[] wt, int[] price, int cap){
+        float ans = 0;
+        ArrayList<Pair> al = new ArrayList<>();
+        for(int i = 0; i<wt.length; i++){
+            Pair obj = new Pair(wt[i], price[i]);
+            al.add(obj);
+        }
+        Collections.sort(al, new Pair());
+        for(Pair val: al){
+            System.out.println(val);
+        }
+        for(int i = 0; i<al.size(); i++){
+            
+            if(cap<=0){
+                break;
+            }else if(cap >= al.get(i).w){
+                cap = cap - al.get(i).w;
+                ans += al.get(i).p;
+            }else{
+                float frac = (float)cap/al.get(i).w;
+                System.out.println("Frac="+frac);
+                ans += frac * al.get(i).p;
+            }
+            
+        }
+        return ans;
+    }
+
 
 }
